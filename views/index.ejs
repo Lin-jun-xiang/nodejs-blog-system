@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Blog</title>
+        <!-- Favicon-->
+        <!-- <link rel="icon" type="image/x-icon" href="assets/favicon.ico" /> -->
+        <!-- Bootstrap icons-->
+        <link href="/bootstrap.min.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <!-- <link href="/article.css" rel="stylesheet" /> -->
+        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <!-- Navigation-->
+        <%- include header.ejs -%>
+
+        <!-- Article List -->
+        <div class="container" style="display: flex; flex-direction: column; height: 450px; align-items: center; justify-content: center;">
+
+            <!-- Search -->
+            <div class="mb-3" style="width: 100%;display: flex ;flex-direction: column;">
+                <label for="exampleFormControlTextarea1" class="form-label text-secondary">關鍵詞keyword</label>
+                <input type="Text" class="form-control form-control-sm" id="search-box" onkeyup="sendData(this)">
+            </div>
+            <script>
+                function sendData(keyword) {
+                    let url = "/searchArticles"
+                    let data = keyword.value
+
+                    $.ajax({
+                        url: url,
+                        method: "POST",
+                        dataType: "JSON",
+                        data: {payload: keyword.value},
+                        success: (response) => {
+                            let articleList = document.getElementById('articleList')
+
+                            // Remove all child node
+                            $("#articleList").empty()
+                            for (let i = 0; i < response.length; i++) {
+                                let trNode = document.createElement('tr')
+                                articleList.appendChild(trNode)
+
+                                let idNode = document.createElement('td')
+                                idNode.innerHTML = i
+                                trNode.appendChild(idNode)
+                                
+                                let authorNode = document.createElement('td')
+                                authorNode.innerHTML = response[i]["author"]
+                                trNode.appendChild(authorNode)
+
+                                let titleNode = document.createElement('td')
+                                titleNode.innerHTML = `<a href="/article/${response[i]["id"]}" style="text-decoration:none;">${response[i]["title"]}</a>`
+                                trNode.appendChild(titleNode)
+
+
+                                let UTCTime = response[i]["time"]
+                                let UTCTimeObj = new Date(UTCTime)
+                                let timeNode = document.createElement('td')
+                                timeNode.innerHTML = UTCTimeObj.toLocaleString()
+                                trNode.appendChild(timeNode)
+                            }
+                        },
+                        error: (err) => {
+                            alert("search error")
+                        }
+                    })
+                }
+            </script>
+
+            <table class="table table-striped">
+                <thead>
+                  <tr class="table-primary">
+                    <th scope="col"></th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Time</th>
+                  </tr>
+                </thead>
+                <tbody id="articleList">
+                    <!-- DOM CREATE -->
+                    <!-- 沒有文章的情況 -->
+                    <% if (articles.length <= 0) { %>
+                        <tr>
+                            <td colspan="4" class="text-center text-primary">尚未有文章</td>
+                        </tr>
+                    <% } %>
+
+                    <!-- 有文章的情況 -->
+                    <% if (articles.length > 0) { %>
+                        <%for (let i = 0; i < articles.length; i++) {%>
+                            <tr>
+                                <th scope="row"><%= i %></th>
+                                <td><%= articles[i]["author"]%></td>
+                                <td><a href="/article/<%=articles[i]["id"]%>" style="text-decoration:none;"><%= articles[i]["title"]%></a></td>
+
+                                <% let UTCTime = articles[i]["time"] %>
+                                <% let UTCTimeObj = new Date(UTCTime) %>
+                                <td><%= UTCTimeObj.toLocaleString()%></td>
+                            </tr>
+                        <%}
+                    }%>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

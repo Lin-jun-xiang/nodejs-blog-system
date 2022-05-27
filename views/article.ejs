@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="robots" content="index, follow">
+        <meta name="description" content="">
+        <meta name="author" content="Jimmy Lin">
+        <title>Article</title>
+        <link rel="stylesheet" href=/bootstrap.min.css>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+
+        <base target="_self">
+    </head>
+    <body>
+        <%- include header -%>
+        <div class="container d-flex justify-content-center">
+            <div class="w-75">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title text-primary" id="myModalLabel">Article</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="title">Title: <%= article["title"] %></label>
+                    </div>
+                    <div class="form-group">
+                        <label for="time" class="text-muted">Time: <%= article["time"] %></label>
+                    </div>
+                    <div class="form-group">
+                        <label for="author" class="text-muted">Author: <%= article["author"] %></label>
+                    </div>
+                    <hr>
+                    <div class="mb-5">
+                        <label for="exampleFormControlTextarea1" class="form-label">Content</label>
+                        <hr>
+                        <div class="container" style="height: 300px;"><%= article["content"] %></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+            </div>
+        </div>
+    </body>
+</html>
