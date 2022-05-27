@@ -1,4 +1,4 @@
-# Web-development---Blog-sysyem
+# Web-development-Blog system
 A blog system developed by nodeJs, Express, MySQL, Ajax
 ---
 
